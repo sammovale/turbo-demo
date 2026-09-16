@@ -1,0 +1,11 @@
+<%= turbo_stream.replace dom_id(@network_host, :status) do %>
+  <%= render "network_hosts/status", network_host: @network_host %>
+<% end %>
+
+<%= turbo_stream.replace "modal" do %>
+  <%= turbo_frame_tag "modal" %>
+<% end %>
+
+<%= turbo_stream.prepend "toasts" do %>
+  <%= render "shared/toast", message: flash[:notice], type: :notice %>
+<% end %>

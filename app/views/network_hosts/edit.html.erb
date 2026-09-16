@@ -1,0 +1,17 @@
+<% content_for :title, "Edit #{@network_host.hostname} · Netdeck" %>
+
+<%= turbo_frame_tag @network_host, data: { turbo_permanent: "" } do %>
+  <div class="frame-panel">
+    <header class="page-header page-header--compact">
+      <div>
+        <p class="eyebrow">Editing in a Turbo Frame</p>
+        <h1>Edit <%= @network_host.hostname %></h1>
+        <p class="lede">Submitting replaces this frame without rebuilding the page shell.</p>
+      </div>
+    </header>
+
+    <div class="form-card">
+      <%= render "form", network_host: @network_host %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,9 @@
+<% @network_hosts.each do |network_host| %>
+  <%= turbo_stream.replace dom_id(network_host) do %>
+    <%= render "network_hosts/network_host_row", network_host: network_host, highlighted: true %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.prepend "toasts" do %>
+  <%= render "shared/toast", message: flash[:notice], type: :notice %>
+<% end %>

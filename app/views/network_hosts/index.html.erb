@@ -1,0 +1,72 @@
+<% content_for :title, "Network hosts · Netdeck" %>
+
+<%= turbo_stream_from :network_hosts %>
+
+<header class="page-header">
+  <div>
+    <p class="eyebrow">Infrastructure inventory</p>
+    <h1>Network hosts</h1>
+    <p class="lede">Search, filter, and order the devices that keep every location connected.</p>
+  </div>
+  <%= link_to "+ Add host", new_network_host_path, class: "button" %>
+</header>
+
+<%= render "shared/tables/filters",
+      url: network_hosts_path,
+      frame: "network_hosts_table",
+      filters: [
+        { key: :status, label: "Status", options: @filter_options[:status].map { |value| [ value.humanize, value ] } },
+        { key: :location, label: "Location", options: @filter_options[:location] },
+        { key: :device_type, label: "Device type", options: @filter_options[:device_type].map { |value| [ value.humanize, value ] } }
+      ] %>
+
+<%= turbo_frame_tag "network_hosts_table", data: { turbo_action: "advance" },
+      class: "table-frame", aria: { live: "polite" } do %>
+  <%= form_with url: bulk_update_path, scope: :bulk_update, method: :patch,
+        class: "bulk-actions", data: { controller: "bulk-actions" } do |form| %>
+    <div class="bulk-actions__toolbar">
+      <strong data-bulk-actions-target="count" aria-live="polite">0 selected</strong>
+      <div class="bulk-actions__controls">
+        <%= form.label :status, "Set status", class: "visually-hidden" %>
+        <%= form.select :status,
+              NetworkHost::STATUSES.map { |status| [ status.humanize, status ] },
+              { prompt: "Set status…" }, required: true %>
+        <%= form.submit "Update selected", class: "button", disabled: true,
+              data: { bulk_actions_target: "submit" } %>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th class="selection-cell" scope="col">
+              <%= tag.input type: :checkbox,
+                    aria: { label: "Select all hosts on this page" },
+                    data: { bulk_actions_target: "all", action: "bulk-actions#toggleAll" } %>
+            </th>
+            <%= sortable_table_header "Hostname", :hostname, frame: "network_hosts_table" %>
+            <%= sortable_table_header "Design name", :design_name, frame: "network_hosts_table" %>
+            <%= sortable_table_header "IP address", :ip_address, frame: "network_hosts_table" %>
+            <%= sortable_table_header "Location", :location, frame: "network_hosts_table" %>
+            <%= sortable_table_header "Type", :device_type, frame: "network_hosts_table" %>
+            <%= sortable_table_header "Status", :status, frame: "network_hosts_table" %>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render partial: "network_host_row", collection: @network_hosts, as: :network_host %>
+        </tbody>
+      </table>
+
+      <% if @network_hosts.empty? %>
+        <div class="empty-state">
+          <h2>No hosts found</h2>
+          <p>Try clearing a filter or broadening your search.</p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= render "shared/tables/pagination", page: @table_page, frame: "network_hosts_table" %>
+<% end %>

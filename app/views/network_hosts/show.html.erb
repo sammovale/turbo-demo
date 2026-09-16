@@ -1,0 +1,9 @@
+<% content_for :title, "#{@network_host.hostname} · Netdeck" %>
+
+<%= turbo_stream_from @network_host %>
+
+<div class="back-link"><%= link_to "← All network hosts", network_hosts_path %></div>
+
+<%= turbo_frame_tag @network_host do %>
+  <%= render @network_host %>
+<% end %>

@@ -1,0 +1,85 @@
+<%= form_with model: network_host, class: "record-form" do |form| %>
+  <% if network_host.errors.any? %>
+    <div class="form-errors" role="alert">
+      <h2><%= pluralize(network_host.errors.count, "problem") %> prevented this host from being saved</h2>
+      <ul>
+        <% network_host.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <fieldset>
+    <legend>Identity</legend>
+    <div class="form-grid">
+      <div class="field">
+        <%= form.label :hostname %>
+        <%= form.text_field :hostname, required: true, autofocus: true, placeholder: "edge-fw-01" %>
+      </div>
+      <div class="field">
+        <%= form.label :design_name %>
+        <%= form.text_field :design_name, required: true, placeholder: "HQ internet edge" %>
+      </div>
+      <div class="field">
+        <%= form.label :location %>
+        <%= form.text_field :location, required: true, placeholder: "New York HQ" %>
+      </div>
+      <div class="field">
+        <%= form.label :device_type %>
+        <%= form.select :device_type, NetworkHost::DEVICE_TYPES.map { |value| [ value.humanize, value ] },
+              { include_blank: "Choose a type" }, required: true %>
+      </div>
+      <div class="field">
+        <%= form.label :status %>
+        <%= form.select :status, NetworkHost::STATUSES.map { |value| [ value.humanize, value ] }, {}, required: true %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Network addressing</legend>
+    <div class="form-grid">
+      <div class="field">
+        <%= form.label :ip_address, "IP address" %>
+        <%= form.text_field :ip_address, required: true, placeholder: "10.20.1.1" %>
+      </div>
+      <div class="field">
+        <%= form.label :mac_address, "MAC address" %>
+        <%= form.text_field :mac_address, placeholder: "00:1a:2b:3c:4d:5e" %>
+      </div>
+      <div class="field">
+        <%= form.label :vlan_id, "VLAN ID" %>
+        <%= form.number_field :vlan_id, min: 1, max: 4094, placeholder: "20" %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Platform</legend>
+    <div class="form-grid">
+      <div class="field">
+        <%= form.label :vendor %>
+        <%= form.text_field :vendor, placeholder: "Cisco" %>
+      </div>
+      <div class="field">
+        <%= form.label :hardware_model %>
+        <%= form.text_field :hardware_model, placeholder: "Catalyst 9300" %>
+      </div>
+      <div class="field">
+        <%= form.label :operating_system %>
+        <%= form.text_field :operating_system, placeholder: "IOS XE 17.12" %>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="field">
+    <%= form.label :notes %>
+    <%= form.textarea :notes, rows: 4, placeholder: "Circuit, rack, support, or lifecycle notes…" %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit class: "button" %>
+    <%= link_to "Cancel", network_host.persisted? ? network_host : network_hosts_path, class: "button button--secondary" %>
+  </div>
+<% end %>

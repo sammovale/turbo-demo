@@ -1,0 +1,13 @@
+<% content_for :title, "Add network host · Netdeck" %>
+
+<header class="page-header page-header--compact">
+  <div>
+    <p class="eyebrow">Infrastructure inventory</p>
+    <h1>Add a network host</h1>
+    <p class="lede">Document a device and its place in the network design.</p>
+  </div>
+</header>
+
+<div class="form-card">
+  <%= render "form", network_host: @network_host %>
+</div>

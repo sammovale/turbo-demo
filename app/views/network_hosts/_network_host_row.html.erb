@@ -1,0 +1,23 @@
+<% highlighted = false unless local_assigns.key?(:highlighted) %>
+
+<tr id="<%= dom_id(network_host) %>" class="<%= "network-host-row--updated" if highlighted %>">
+  <td class="selection-cell">
+    <%= check_box_tag "bulk_update[ids][]", network_host.id, false,
+          id: dom_id(network_host, :selection),
+          aria: { label: "Select #{network_host.hostname}" },
+          data: {
+            bulk_actions_target: "checkbox",
+            action: "bulk-actions#selectionChanged"
+          } %>
+  </td>
+  <td><%= link_to network_host.hostname, network_host, data: { turbo_frame: "_top" }, class: "host-link" %></td>
+  <td><%= network_host.design_name %></td>
+  <td><code><%= network_host.ip_address %></code></td>
+  <td><%= network_host.location %></td>
+  <td><%= network_host.device_type.humanize %></td>
+  <%= render "network_hosts/status", network_host: network_host %>
+  <td class="table-actions">
+    <%= link_to "Change status", edit_network_host_status_path(network_host),
+          data: { turbo_frame: "modal" }, class: "quick-action" %>
+  </td>
+</tr>

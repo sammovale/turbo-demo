@@ -1,0 +1,32 @@
+<%= turbo_frame_tag "modal" do %>
+  <%= render layout: "shared/modal", locals: { title: "Change #{@network_host.hostname} status" } do %>
+    <p class="modal__description">
+      Update lifecycle state without leaving the inventory or replacing the whole table.
+    </p>
+
+    <%= form_with model: @network_host, url: network_host_status_path(@network_host),
+          method: :patch, class: "modal-form" do |form| %>
+      <% if @network_host.errors.any? %>
+        <div class="form-errors" role="alert">
+          <ul>
+            <% @network_host.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="field">
+        <%= form.label :status %>
+        <%= form.select :status,
+              NetworkHost::STATUSES.map { |status| [ status.humanize, status ] },
+              {}, autofocus: true, required: true %>
+      </div>
+
+      <div class="form-actions">
+        <%= form.submit "Update status", class: "button" %>
+        <button type="button" class="button button--secondary" data-action="modal#close">Cancel</button>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

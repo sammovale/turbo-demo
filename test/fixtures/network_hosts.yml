@@ -1,0 +1,27 @@
+edge:
+  hostname: edge-fw-01
+  design_name: HQ internet edge
+  ip_address: 10.20.1.1
+  mac_address: 02:00:00:00:00:01
+  location: New York HQ
+  device_type: firewall
+  vendor: Palo Alto
+  hardware_model: PA-440
+  operating_system: PAN-OS 11.1
+  status: active
+  vlan_id: 20
+  notes: Primary internet firewall
+
+branch:
+  hostname: branch-rtr-01
+  design_name: Austin WAN router
+  ip_address: 10.30.1.1
+  mac_address: 02:00:00:00:00:02
+  location: Austin Office
+  device_type: router
+  vendor: Cisco
+  hardware_model: ISR 4331
+  operating_system: IOS XE 17.12
+  status: planned
+  vlan_id: 30
+  notes: Branch rollout

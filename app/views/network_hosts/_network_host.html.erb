@@ -1,0 +1,44 @@
+<article class="record-detail">
+  <header class="record-detail__header">
+    <div>
+      <div class="record-detail__meta"><%= status_badge(network_host.status) %> <span><%= network_host.device_type.humanize %></span></div>
+      <h1><%= network_host.hostname %></h1>
+      <p class="lede"><%= network_host.design_name %></p>
+    </div>
+    <div class="record-actions">
+      <%= link_to "Edit in place", edit_network_host_path(network_host), data: { turbo_frame: dom_id(network_host) }, class: "button" %>
+      <%= button_to "Remove", network_host, method: :delete,
+            form: { data: { turbo_confirm: "Remove #{network_host.hostname}?", turbo_frame: "_top" } },
+            class: "button button--danger" %>
+    </div>
+  </header>
+
+  <div class="detail-grid">
+    <section class="detail-card">
+      <h2>Network</h2>
+      <dl>
+        <div><dt>IP address</dt><dd><code><%= network_host.ip_address %></code></dd></div>
+        <div><dt>MAC address</dt><dd><code><%= network_host.mac_address.presence || "Not recorded" %></code></dd></div>
+        <div><dt>VLAN</dt><dd><%= network_host.vlan_id || "Not assigned" %></dd></div>
+        <div><dt>Location</dt><dd><%= network_host.location %></dd></div>
+      </dl>
+    </section>
+
+    <section class="detail-card">
+      <h2>Platform</h2>
+      <dl>
+        <div><dt>Vendor</dt><dd><%= network_host.vendor.presence || "Not recorded" %></dd></div>
+        <div><dt>Model</dt><dd><%= network_host.hardware_model.presence || "Not recorded" %></dd></div>
+        <div><dt>Operating system</dt><dd><%= network_host.operating_system.presence || "Not recorded" %></dd></div>
+        <div><dt>Last updated</dt><dd><%= time_tag network_host.updated_at, network_host.updated_at.to_fs(:long) %></dd></div>
+      </dl>
+    </section>
+  </div>
+
+  <% if network_host.notes.present? %>
+    <section class="detail-card detail-card--notes">
+      <h2>Notes</h2>
+      <%= simple_format network_host.notes %>
+    </section>
+  <% end %>
+</article>

@@ -1,0 +1,10 @@
+<% type = local_assigns.fetch(:type, :notice).to_s %>
+<% type = "notice" unless %w[ notice alert ].include?(type) %>
+
+<div class="<%= class_names("toast", "toast--#{type}") %>" role="<%= type == "alert" ? "alert" : "status" %>" data-controller="toast"
+  data-toast-duration-value="5000"
+  data-action="mouseenter->toast#pause mouseleave->toast#resume">
+  <span class="toast__icon" aria-hidden="true"><%= type == "alert" ? "!" : "✓" %></span>
+  <p class="toast__message"><%= message %></p>
+  <button type="button" class="toast__close" aria-label="Dismiss notification" data-action="toast#dismiss">×</button>
+</div>

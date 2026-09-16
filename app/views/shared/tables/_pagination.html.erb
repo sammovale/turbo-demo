@@ -1,0 +1,26 @@
+<nav class="pagination" aria-label="Table pagination">
+  <p>
+    Showing <strong><%= page.first_record %>–<%= page.last_record %></strong>
+    of <strong><%= page.total_count %></strong>
+  </p>
+
+  <% if page.total_pages > 1 %>
+    <div class="pagination__links">
+      <% if page.previous_page %>
+        <%= link_to "← Previous", url_for(table_query_parameters.merge(page: page.previous_page)),
+              data: { turbo_frame: frame }, class: "button button--secondary" %>
+      <% else %>
+        <span class="button button--secondary is-disabled">← Previous</span>
+      <% end %>
+
+      <span>Page <strong><%= page.current_page %></strong> of <%= page.total_pages %></span>
+
+      <% if page.next_page %>
+        <%= link_to "Next →", url_for(table_query_parameters.merge(page: page.next_page)),
+              data: { turbo_frame: frame }, class: "button button--secondary" %>
+      <% else %>
+        <span class="button button--secondary is-disabled">Next →</span>
+      <% end %>
+    </div>
+  <% end %>
+</nav>
